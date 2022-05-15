@@ -1,0 +1,8 @@
+{
+    "Parameters": {
+        "commands": [
+            "#!/bin/bash",
+            "nc -w 5 -u 172.30.0.0 8080"
+        ]
+    }
+}
