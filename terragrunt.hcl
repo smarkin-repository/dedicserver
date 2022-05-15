@@ -1,7 +1,9 @@
 locals {
     env_vars = read_terragrunt_config(find_in_parent_folders("environment.hcl")).locals
     region_vars = read_terragrunt_config(find_in_parent_folders("region.hcl")).locals
-    global_vars = read_terragrunt_config(find_in_parent_folders("global.hcl")).locals
+    global_vars = read_terragrunt_config(find_in_parent_folders("global.hcl")).locals  
+    env = local.env_vars.env
+    aws_region = local.region_vars.aws_region
     resource_prefix = "${local.global_vars.stack}-${local.region_vars.region}-${local.env_vars.env}-"
     bucket_state_name = "${local.resource_prefix}tfstate"
     common_tags = {

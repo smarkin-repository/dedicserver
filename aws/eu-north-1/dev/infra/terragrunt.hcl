@@ -12,6 +12,15 @@ include "common" {
   expose = true
 }
 
+dependency "data" {
+  config_path = "../data"
+
+  mock_outputs_allowed_terraform_commands = ["validate"]
+  mock_outputs = {
+    aws_availability_zones = {}
+  }
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # Locals are named constants that are reusable within the configuration.
 # ---------------------------------------------------------------------------------------------------------------------
@@ -29,8 +38,7 @@ inputs = {
   name = "${include.common.locals.resource_prefix}vpc"
   cidr = local.vpc_cidr
 
-  azs             = ["eu-north-1a", "eu-north-1b", "eu-north-1c"]
-  private_subnets = local.private_subnets
+  azs             = dependency.data.outputs.aws_availability_zones.names
   public_subnets  = local.public_subnets
   vpc_tags = {
     Name = "${include.common.locals.resource_prefix}vpc"
