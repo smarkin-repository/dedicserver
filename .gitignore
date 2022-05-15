@@ -24,6 +24,7 @@ crash.log
 #
 *.tfvars
 **/.terraform.lock.hcl
+**/.terragrunt-cache
 
 # Ignore override files as they are usually used to override resources locally and so
 # are not checked in
@@ -33,6 +34,7 @@ override.tf.json
 *_override.tf.json
 backend.tf
 provider.tf
+common.tf
 
 # Include override files you do wish to add to version control using negated pattern
 #
