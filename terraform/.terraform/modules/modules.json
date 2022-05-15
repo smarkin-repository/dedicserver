@@ -1,0 +1,1 @@
+{"Modules":[{"Key":"vpc","Source":"registry.terraform.io/terraform-aws-modules/vpc/aws","Version":"3.12.0","Dir":".terraform/modules/vpc"},{"Key":"alb","Source":"registry.terraform.io/terraform-aws-modules/alb/aws","Version":"6.7.0","Dir":".terraform/modules/alb"},{"Key":"","Source":"","Dir":"."}]}
