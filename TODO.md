@@ -11,7 +11,7 @@
 
 [x] develop remain elements of infrastructure 
   + start up EKS + check
-  ? rollout dashboard https://github.com/kubernetes/dashboard
+  - [!] rollout dashboard https://github.com/kubernetes/dashboard
 
 [ ] rollout simple-server
 [ ] get successful check
