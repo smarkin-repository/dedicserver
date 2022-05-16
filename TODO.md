@@ -25,6 +25,6 @@
 [] issues:
 - My current user or role does not have access to Kubernetes objects on this EKS cluster
   https://docs.aws.amazon.com/eks/latest/userguide/view-kubernetes-resources.html#view-kubernetes-resources-permissions
-- no access to k8s dashboard
+- no access to AWS resources from k8s dashboard
   https://kubernetes.io/docs/reference/access-authn-authz/authentication/
-- roles.rbac.authorization.k8s.io is forbidden: User "system:serviceaccount:kube-system:deployment-controller" cannot list resource "roles" in API group "rbac.authorization.k8s.io" in the namespace "default"
+  roles.rbac.authorization.k8s.io is forbidden: User "system:serviceaccount:kube-system:deployment-controller" cannot list resource "roles" in API group "rbac.authorization.k8s.io" in the namespace "default"
