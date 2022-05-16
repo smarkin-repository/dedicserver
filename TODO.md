@@ -14,10 +14,16 @@
   - [!] rollout dashboard https://github.com/kubernetes/dashboard
 
 [ ] rollout simple-server
+
 [ ] get successful check
+
 [ ] write checker for xonotic
+
 [ ] rollout xonotic
-[ ] get successful check for xonotic
+
+[ ] get successful check for 
+xonotic
+
 [ ] setup public connection for production server
   - add ALB + AWS LoadBalancing Controller + ACM
   - rollout istio + echo server
