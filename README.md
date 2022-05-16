@@ -4,14 +4,16 @@ Research https://agones.dev/site/. Deploy agones locally (minikube or docker des
 
 
 # Rollouting
-
-> cd ./aws/eu-north-1/dev/infra
-> terragrunt apply
-
-> cd ./aws/eu-north-1/dev/ssm
-> terragrunt apply
-
-> cd ./aws/eu-north-1/dev/eks-cluster
-> terragrunt apply
-
+```
+ cd ./aws/eu-north-1/dev/infra
+ terragrunt apply
+```
+```
+cd ./aws/eu-north-1/dev/ssm
+terragrunt apply
+```
+```
+cd ./aws/eu-north-1/dev/eks-cluster
+terragrunt apply
+```
 
