@@ -9,7 +9,7 @@
   + connect to bastion and run netcat to check connection to the simple-server 
 [+] develop remain elements of infrastructure 
   + start up EKS + check
-  + rollout dashboard https://github.com/kubernetes/dashboard
+  ? rollout dashboard https://github.com/kubernetes/dashboard
 [] rollout simple-server
 [] get successful check
 [] write checker for xonotic
