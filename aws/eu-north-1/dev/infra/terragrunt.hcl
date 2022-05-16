@@ -40,7 +40,23 @@ inputs = {
 
   azs             = dependency.data.outputs.aws_availability_zones.names
   public_subnets  = local.public_subnets
+  private_subnets  = local.private_subnets
+  
   vpc_tags = {
     Name = "${include.common.locals.resource_prefix}vpc"
   }
+
+# about network tags requirements for AWS Load Balancer Controller
+# https://docs.aws.amazon.com/eks/latest/userguide/network-load-balancing.html 
+
+  public_subnet_tags = {
+    # "kubernetes.io/cluster/${local.name}" = "shared"
+    "kubernetes.io/role/elb"              = 1
+  }
+
+  private_subnet_tags = {
+    # "kubernetes.io/cluster/${local.name}" = "shared"
+    "kubernetes.io/role/internal-elb"     = 1
+  }
+
 }
