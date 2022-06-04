@@ -188,3 +188,9 @@ dmypy.json
 **/.vagrant/
 # Log files (if you are creating logs in debug mode, uncomment this)
 # *.log
+
+# ingore vcode files
+.vscode/
+
+# ignore copilot files for testing
+copilot/
