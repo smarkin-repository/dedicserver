@@ -1,0 +1,1 @@
+kubectl -n kube-system get secret $(kubectl -n kube-system get secret | grep eks-admin| awk '{print $1}' ) -o go-template='{{.data.token}}' | base64 -d
