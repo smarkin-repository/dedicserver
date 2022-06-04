@@ -21,6 +21,7 @@ locals {
   tags            = {}
 }
 
+
 data "aws_caller_identity" "current" {}
 
 ################################################################################
@@ -97,7 +98,7 @@ module "eks" {
 
   eks_managed_node_group_defaults = {
     ami_type       = "AL2_x86_64"
-    instance_types = ["m6i.large", "m5.large", "m5n.large", "t4g.medium", "t3.large"]
+    instance_types = ["m6i.large", "m5.large", "m5n.large", "t4g.medium", "t3.large", "t3.medium"]
     disk_size      = 50
     # We are using the IRSA created below for permissions
     # However, we have to deploy with the policy attached FIRST (when creating a fresh cluster)
@@ -114,13 +115,14 @@ module "eks" {
     #   use_name_prefix = true
 
       subnet_ids = var.subnet_ids
-      instance_types = ["t3.large"]
+      instance_types = var.instance_types
+      capacity_type = "SPOT"
 
       min_size     = 1
       max_size     = 3
       desired_size = 1
 
-      ami_id                     = data.aws_ami.eks_default.image_id
+      ami_id                     = data.aws_ssm_parameter.ami.value # data.aws_ami.eks_default.image_id
       enable_bootstrap_user_data = true
       update_config = {
         max_unavailable_percentage = 50 # or set `max_unavailable`
@@ -223,3 +225,8 @@ data "aws_ami" "eks_default" {
     values = ["amazon-eks-node-${local.cluster_version}-v*"]
   }
 }
+
+data "aws_ssm_parameter" "ami" {
+  name = "/aws/service/eks/optimized-ami/1.22/amazon-linux-2/recommended/image_id"
+}
+

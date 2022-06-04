@@ -12,3 +12,9 @@ variable "caller" {
     type = map(string)
     description = "(optional) describe your variable"
 }
+
+variable "instance_types" {
+    type = list
+    description = "(optional) describe your variable"
+}
+
