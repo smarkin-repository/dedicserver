@@ -3,6 +3,11 @@ variable "vpc_id" {
     description = "(optional) describe your variable"
 }
 
+variable "vpc_cidr_block" {
+    type = string
+    description = "(optional) describe your variable"
+}
+
 variable "subnet_ids" {
     type = list(string)
     description = "(optional) describe your variable"

@@ -73,9 +73,27 @@ module "eks" {
       type                       = "egress"
       source_node_security_group = true
     }
+    ingress_nodes_ephemeral_ports_udp = {
+      description                = "To node 7000-8000"
+      protocol                   = "udp"
+      from_port                  = 7000
+      to_port                    = 8000
+      type                       = "ingress"
+      cidr_blocks                = ["0.0.0.0/0", var.vpc_cidr_block]
+      # ipv6_cidr_blocks           = ["::/0"]
+      # source_node_security_group = true
+    }
+    engress_all = {
+      description                = "To all"
+      protocol                   = "-1"
+      from_port                  = 0
+      to_port                    = 0
+      type                       = "egress"
+      cidr_blocks                = ["0.0.0.0/0"]
+    }
+    
   }
 
-  # Extend node-to-node security group rules
   node_security_group_additional_rules = {
     ingress_self_all = {
       description = "Node to node all ports/protocols"
@@ -113,7 +131,6 @@ module "eks" {
     complete = {
     #   name            = "${local.name}eks-mng"
     #   use_name_prefix = true
-
       subnet_ids = var.subnet_ids
       instance_types = var.instance_types
       capacity_type = "SPOT"
@@ -132,6 +149,21 @@ module "eks" {
     #   enable_monitoring       = true
 
     }
+
+    # agones-system = {
+    #   instance_types = "t3.medium"
+    #   asg_desired_capacity = 1
+    #   kubelet_extra_args   = "--node-labels=agones.dev/agones-system=true --register-with-taints=agones.dev/agones-system=true:NoExecute"
+    #   public_ip            = true
+    # }
+    # agones-metrics = {
+    #   instance_type        = var.machine_type
+    #   asg_desired_capacity = 1
+    #   kubelet_extra_args   = "--node-labels=agones.dev/agones-metrics=true --register-with-taints=agones.dev/agones-metrics=true:NoExecute"
+    #   public_ip            = true
+    # }
+
+
   }
 
   tags = local.tags
