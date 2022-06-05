@@ -20,12 +20,17 @@ $ kubectl.exe create -f ./gameserver.yaml
 Error from server (InternalError): error when creating "./gameserver.yaml": Internal error occurred: failed calling webhook "mutations.agones.dev": failed to call webhook: Post "https://agones-controller-service.agones-system.svc:443/mutate?timeout=10s": context deadline exceeded
  take a look https://github.com/googleforgames/agones/issues/1196#issuecomment-561015853 
  be sure all requests in from the list (https://agones.dev/site/docs/installation/) are complited
-
-#create-eks-cluster
-
-
-  - chech simple-game-server
+==============================================================
+xonotic-usw2-dev-eks-node
+needs to add this policy to the cluster
+TCP	0 - 65535	0.0.0.0/0
+UDP	0 - 65535	0.0.0.0/0
+==============================================================
+  - [+] chech simple-game-server
+ssm connection to Node instance and intall netcat to check connection
 ```
+aws ssm start-session --target $(aws ec2 describe-instances --filters Name=tag:eks:cluster-name,Values=xonotic-usw2-dev-eks Name=tag:Name,Values=complete --query "Reservations[].Instances[].InstanceId" --output text)
+sudo yum install -y nc
 nc -u {IP} {PORT}
 Hello World !
 ACK: Hello World !

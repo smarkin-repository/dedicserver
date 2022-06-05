@@ -17,3 +17,14 @@ cd ./aws/eu-north-1/dev/eks-cluster
 terragrunt apply
 ```
 
+
+
+
+Once ready you can create your first GameServer using our examples https://agones.dev/site/docs/getting-started/create-gameserver/ .
+
+Finally don't forget to explore our documentation and usage guides on how to develop and host dedicated game servers on top of Agones:
+
+ - Create a Game Server (https://agones.dev/site/docs/getting-started/create-gameserver/)
+ - Integrating the Game Server SDK (https://agones.dev/site/docs/guides/client-sdks/)
+ - GameServer Health Checking (https://agones.dev/site/docs/guides/health-checking/)
+ - Accessing Agones via the Kubernetes API (https://agones.dev/site/docs/guides/access-api/)
