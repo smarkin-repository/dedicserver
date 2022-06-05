@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-set -x
+# set -x
 
 # function print help
 function print_help() {
