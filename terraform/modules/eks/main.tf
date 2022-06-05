@@ -28,6 +28,30 @@ data "aws_caller_identity" "current" {}
 # EKS Module
 ################################################################################
 
+
+resource "aws_security_group" "additional" {
+  name_prefix = "worker_group_mgmt_one"
+  vpc_id      = var.vpc_id
+  description = "Worker Group Management One"
+
+  ingress {
+    from_port = 7000
+    to_port   = 8000
+    protocol  = "udp"
+
+    cidr_blocks = [
+      "0.0.0.0/0",
+    ]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 module "eks" {
   source = "terraform-aws-modules/eks/aws"
   version = "v18.7.2"
@@ -65,23 +89,21 @@ module "eks" {
 
   # Extend cluster security group rules
   cluster_security_group_additional_rules = {
-    egress_nodes_ephemeral_ports_tcp = {
-      description                = "To node 1025-65535"
+    ingress_nodes_ephemeral_ports_tcp = {
+      description                = "To node 1-65535"
       protocol                   = "tcp"
-      from_port                  = 1025
+      from_port                  = 1
       to_port                    = 65535
-      type                       = "egress"
-      source_node_security_group = true
-    }
-    ingress_nodes_ephemeral_ports_udp = {
-      description                = "To node 7000-8000"
-      protocol                   = "udp"
-      from_port                  = 7000
-      to_port                    = 8000
       type                       = "ingress"
       cidr_blocks                = ["0.0.0.0/0", var.vpc_cidr_block]
-      # ipv6_cidr_blocks           = ["::/0"]
-      # source_node_security_group = true
+    }
+    ingress_nodes_ephemeral_ports_udp = {
+      description                = "To node 1-65535"
+      protocol                   = "udp"
+      from_port                  = 1
+      to_port                    = 65535
+      type                       = "ingress"
+      cidr_blocks                = ["0.0.0.0/0", var.vpc_cidr_block]
     }
     engress_all = {
       description                = "To all"
@@ -91,7 +113,6 @@ module "eks" {
       type                       = "egress"
       cidr_blocks                = ["0.0.0.0/0"]
     }
-    
   }
 
   node_security_group_additional_rules = {
@@ -116,13 +137,14 @@ module "eks" {
 
   eks_managed_node_group_defaults = {
     ami_type       = "AL2_x86_64"
-    instance_types = ["m6i.large", "m5.large", "m5n.large", "t4g.medium", "t3.large", "t3.medium"]
+    instance_types = ["m6i.large", "m5.large", "m5n.large", "t4g.medium", "t3.large", "t3.medium", "t3.small"]
     disk_size      = 50
     # We are using the IRSA created below for permissions
     # However, we have to deploy with the policy attached FIRST (when creating a fresh cluster)
     # and then turn this off after the cluster/node group is created. Without this initial policy,
     # the VPC CNI fails to assign IPs and nodes cannot join the cluster
     # See https://github.com/aws/containers-roadmap/issues/1666 for more context
+    ami_id                       = data.aws_ssm_parameter.ami.value
     iam_role_attach_cni_policy   = true
     iam_role_additional_policies = ["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
   }
@@ -149,21 +171,49 @@ module "eks" {
     #   enable_monitoring       = true
 
     }
+  }
 
-    # agones-system = {
-    #   instance_types = "t3.medium"
-    #   asg_desired_capacity = 1
-    #   kubelet_extra_args   = "--node-labels=agones.dev/agones-system=true --register-with-taints=agones.dev/agones-system=true:NoExecute"
-    #   public_ip            = true
-    # }
-    # agones-metrics = {
-    #   instance_type        = var.machine_type
-    #   asg_desired_capacity = 1
-    #   kubelet_extra_args   = "--node-labels=agones.dev/agones-metrics=true --register-with-taints=agones.dev/agones-metrics=true:NoExecute"
-    #   public_ip            = true
-    # }
+  self_managed_node_group_defaults = {
+    vpc_security_group_ids = [aws_security_group.additional.id]
+    block_device_mappings = {
+         xvda = {
+           device_name = "/dev/xvda"
+           ebs = {
+             delete_on_termination = true
+             encrypted             = false
+             volume_size           = 50
+             volume_type           = "gp2"
+           }
+         }
+       }
+  }
 
+  self_managed_node_groups = {
+    agones-system = {
+      instance_type = "t3.small"
+      min_size      = 1
+      max_size      = 1
+      desired_size  = 1
+      bootstrap_extra_args       = "--node-labels=agones.dev/agones-system=true --register-with-taints=agones.dev/agones-system=true:NoExecute"
+      use_mixed_instances_policy = true
+      # mixed_instances_policy = {
+      #   instances_distribution = {
+      #     spot_instance_pools = 4
+      #   }
+    }
 
+    agones-metrics = {
+      instance_type = "t3.small"
+      min_size      = 1
+      max_size      = 1
+      desired_size  = 1
+      bootstrap_extra_args       = "--node-labels=agones.dev/agones-metrics=true --register-with-taints=agones.dev/agones-metrics=true:NoExecute"
+      use_mixed_instances_policy = true
+      # mixed_instances_policy = {
+      #   instances_distribution = {
+      #     spot_instance_pools = 4
+      #   }
+    }
   }
 
   tags = local.tags
