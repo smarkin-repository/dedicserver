@@ -95,7 +95,7 @@ module "eks" {
       from_port                  = 1
       to_port                    = 65535
       type                       = "ingress"
-      cidr_blocks                = ["0.0.0.0/0", var.vpc_cidr_block]
+      cidr_blocks                = [var.vpc_cidr_block]
     }
     ingress_nodes_ephemeral_ports_udp = {
       description                = "To node 1-65535"
@@ -103,7 +103,7 @@ module "eks" {
       from_port                  = 1
       to_port                    = 65535
       type                       = "ingress"
-      cidr_blocks                = ["0.0.0.0/0", var.vpc_cidr_block]
+      cidr_blocks                = [var.vpc_cidr_block]
     }
     engress_all = {
       description                = "To all"
@@ -123,6 +123,22 @@ module "eks" {
       to_port     = 0
       type        = "ingress"
       self        = true
+    }
+    ingress_nodes_ports_tcp = {
+      description                = "To node 1-65535"
+      protocol                   = "tcp"
+      from_port                  = 1
+      to_port                    = 65535
+      type                       = "ingress"
+      cidr_blocks                = [var.vpc_cidr_block]
+    }
+    ingress_nodes_ports_udp = {
+      description                = "To node 1-65535"
+      protocol                   = "udp"
+      from_port                  = 1
+      to_port                    = 65535
+      type                       = "ingress"
+      cidr_blocks                = [var.vpc_cidr_block]
     }
     egress_all = {
       description      = "Node all egress"
