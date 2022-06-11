@@ -38,8 +38,12 @@
   - get successful check for xonotic 
   - succesful connect using localhost client to xonotic server https://xonotic.org/ via kubectl proxy
 
+- [ ] implement workflow for changing GameServer 
+  - [ ] implement gitops approuch https://fluxcd.io/legacy/flux/
+  - [ ] prepare workflow for changing GameServer https://agones.dev/site/docs/getting-started/edit-first-gameserver-go/
+  - [ ] check flow
+  - [ ] implement other gameservers for example list 
 
-- [ ] prepare workflow for changing GameServer https://agones.dev/site/docs/getting-started/edit-first-gameserver-go/
 - [ ] setup public connection to GameServer
   - add ALB + AWS LoadBalancing Controller + ACM
   - rollout istio + echo server
