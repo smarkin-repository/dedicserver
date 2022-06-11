@@ -1,6 +1,6 @@
 #!/bin/bash 
 
-# set -x
+set -e
 
 # function print help
 function print_help() {
@@ -58,8 +58,16 @@ if [ "$COMMAND" == "destroy" ]; then
     fi
 fi
 
+set -x 
 
 cd ./aws/$REGION/$ENV
-terragrunt run-all $COMMAND --terragrunt-exclude-dir=ssm --terragrunt-non-interactive
+if [ $COMMAND == "destroy" ]; then
+  for module in eks-cluster vpc; do
+  	cd $module
+	terragrunt run-all $COMMAND --terragrunt-non-interactive || true
+	cd -
+  done;
+else
+  terragrunt run-all $COMMAND --terragrunt-exclude-dir=ssm --terragrunt-non-interactive
+fi
 
-# aws cli show vpc with tags "Environment"="$ENV"
