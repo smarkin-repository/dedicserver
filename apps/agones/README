@@ -3,3 +3,26 @@
 helm repo add agones https://agones.dev/chart/stable
 helm repo update
 helm install my-release --namespace agones-system --create-namespace agones/agones
+
+
+# https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
+# providing access to pod via NodePort
+kubectl expose deployment hello-app --type=NodePort --port=8080
+minikube service my-service --url
+kubectl port-forward service/my-service <local_port>:<target_port>
+curl http://localhost:<local_port>/
+
+# providing access to pod via LoadBalancer
+kubectl expose deployment balanced --type=LoadBalancer --port=<target_port>
+minikube tunnel
+kubectl get services balanced
+curl http://<EXTERNAL_API:<target_port>/
+
+
+# simple-server
+kubectl apply -f gameserver.yaml
+kubectl apply -f lb.yaml
+minikube tunnel
+
+echo "Hello!" | ncat -u {IP} {PORT}
+ACK: Hello!
