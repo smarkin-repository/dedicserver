@@ -25,10 +25,10 @@
   - setup king + kong ingress controller - verification using CoreDNS https://docs.konghq.com/kubernetes-ingress-controller/2.1.x/guides/using-udpingress/
   - setup kong ingress controller for simple-game-server  
   - [x] rollout simple-game-server Windows + minikube
-  - [ ] rollout Fleet            https://agones.dev/site/docs/getting-started/create-fleet/
-  - [ ] rollout Fleet Autoscaler https://agones.dev/site/docs/getting-started/create-fleetautoscaler/
-  - [ ] rollout Webhook Scaler   https://agones.dev/site/docs/getting-started/create-webhook-fleetautoscaler/
-  - [ ] investigate how it works
+  - [x] rollout Fleet            https://agones.dev/site/docs/getting-started/create-fleet/
+  - [x] rollout Fleet Autoscaler https://agones.dev/site/docs/getting-started/create-fleetautoscaler/
+  - [x] [SKIP] rollout Webhook Scaler   https://agones.dev/site/docs/getting-started/create-webhook-fleetautoscaler/
+  - [x] investigate how it works
   - [ ] prepare autorollout and checking simple-server as base test
   - [ ] automation delete simple-server 
  
@@ -50,6 +50,12 @@
   - provide access from global
   - succesful connect to the xonotic server
 
+- [ ] Matchmaking
+  - investigate how it works
+  - implement Matchmaking https://github.com/googleforgames/open-match 
+
+- [ ] Implemnet Observability
+  - Dashboard with statistic using Prometheus, Grafana or Stackdriver  https://opencensus.io/
 
 <b>issues</b>:
 - [x] My current user or role does not have access to Kubernetes objects on this EKS cluster
@@ -61,7 +67,14 @@
 Error from server (InternalError): error when creating "./gameserver.yaml": Internal error occurred: failed calling webhook "mutations.agones.dev": failed to call webhook: Post "https://agones-controller-service.agones-system.svc:443/mutate?timeout=10s": context deadline exceeded
  take a look https://github.com/googleforgames/agones/issues/1196#issuecomment-561015853 
  be sure all requests in from the list (https://agones.dev/site/docs/installation/) are complited
-- [] minikube tunnel doesn't appear to support UDP LoadBalancers  
+
+ solution:
+  needs to add this policy to the cluster
+  TCP	0 - 65535	cidr_blocks
+  UDP	0 - 65535	cidr_blocks
+
+
+- [x] minikube tunnel doesn't appear to support UDP LoadBalancers  
 https://github.com/kubernetes/minikube/issues/12362
 https://github.com/googleforgames/agones/issues/2471
 In macOS and Windows, docker does not expose the docker network to the host. Because of this limitation, containers (including kind nodes) are only reachable from the host via port-forwards, however other containers/pods can reach other things running in docker including loadbalancers.
@@ -73,11 +86,14 @@ service "udp" exposed
 ```
 Then I got the IP from `get svc`.  I used `kubectl exec -ti` to exec into my pod and run `nc -l -p 12345 -u` in one terminal and I sent bytes to it via `netcat -u <public ip> 12345`.
 
- 
- solution:
-  needs to add this policy to the cluster
-  TCP	0 - 65535	cidr_blocks
-  UDP	0 - 65535	cidr_blocks
+solution:
+  rollout minikube on windows host insted of WSL 
+
+ - [ ] don't quete understand how to do 
+ spec:
+  players:
+    initialCapacity: 10
+
  
 
 <b>useful links</b>:

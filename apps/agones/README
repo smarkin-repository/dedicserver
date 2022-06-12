@@ -1,8 +1,3 @@
-# https://agones.dev/site/docs/installation/install-agones/helm/
-
-helm repo add agones https://agones.dev/chart/stable
-helm repo update
-helm install my-release --namespace agones-system --create-namespace agones/agones
 
 
 # https://kubernetes.io/docs/tasks/access-application-cluster/ingress-minikube/
@@ -20,9 +15,28 @@ curl http://<EXTERNAL_API:<target_port>/
 
 
 # simple-server
+
+# https://agones.dev/site/docs/installation/install-agones/helm/
+
+helm repo add agones https://agones.dev/chart/stable
+helm repo update
+helm install my-release --namespace agones-system --create-namespace agones/agones
+
 kubectl apply -f gameserver.yaml
 kubectl apply -f lb.yaml
 minikube tunnel
 
-echo "Hello!" | ncat -u {IP} {PORT}
+
+echo "Hello!" | ncat -u $(k get svc| grep agones | awk '{print $4}') $(k get svc | grep agones | awk '{print $5}' | cut -d":" -f1)
+
+# fleet
+k install -f ./fleet.yaml
+kubectl describe fleet simple-game-server
+# scale up
+k scale fleet simple-game-server --replicas=5
+# scale down
+kubectl scale fleet simple-game-server --replicas=0
+# check allocated server
+$ k apply -f ./gameserverallocation.yaml -o yaml
+$ echo "Hello!" | ncat -u $(k get gs | grep Allocated | awk '{print $3" "$4}')
 ACK: Hello!
