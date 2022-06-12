@@ -11,33 +11,27 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-# kind: Namespace
-# apiVersion: v1
-# metadata:
-#   name: simple-game-server
-#   labels:
-#     name: simple-game-server
 
----
 apiVersion: "agones.dev/v1"
-kind: GameServer
+kind: Fleet
 metadata:
-  #generateName: "simple-game-server-"
   name: simple-game-server
 spec:
-  ports:
-  - name: default
-    portPolicy: Dynamic
-    containerPort: 7654
+  replicas: 2
   template:
     spec:
-      containers:
-      - name: simple-game-server
-        image: gcr.io/agones-images/simple-game-server:0.12
-        resources:
-          requests:
-            memory: "64Mi"
-            cpu: "20m"
-          limits:
-            memory: "64Mi"
-            cpu: "20m"
+      ports:
+      - name: default
+        containerPort: 7654
+      template:
+        spec:
+          containers:
+          - name: simple-game-server
+            image: gcr.io/agones-images/simple-game-server:0.13
+            resources:
+              requests:
+                memory: "64Mi"
+                cpu: "20m"
+              limits:
+                memory: "64Mi"
+                cpu: "20m"

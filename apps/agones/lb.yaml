@@ -5,7 +5,7 @@ metadata:
 spec:
   type: LoadBalancer
   selector:
-    agones.dev/gameserver: simple-game-server-2pr7n
+    agones.dev/gameserver: simple-game-server
   ports:
   - protocol: UDP
     port: 7654 # local port
