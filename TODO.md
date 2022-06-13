@@ -32,10 +32,8 @@
   - [ ] prepare autorollout and checking simple-server as base test
   - [ ] automation delete simple-server 
  
-- [ ] rollout xonotic
-  - [ ] write checker for xonotic
+- [x] rollout xonotic
   - [x] implement solution https://github.com/googleforgames/agones/tree/main/examples/xonotic
-  - [ ] get successful check for xonotic 
   - [x] succesful connect using localhost client to xonotic server https://xonotic.org/ via kubectl proxy
 
 - [ ] implement workflow for changing GameServer 
@@ -44,18 +42,19 @@
   - [ ] check flow
   - [ ] implement other gameservers for example list 
 
-- [ ] setup public connection to GameServer
-  - add ALB + AWS LoadBalancing Controller + ACM
-  - rollout istio + echo server
-  - provide access from global
-  - succesful connect to the xonotic server
-
 - [ ] Matchmaking
   - investigate how it works
   - implement Matchmaking https://github.com/googleforgames/open-match 
 
 - [ ] Implemnet Observability
   - Dashboard with statistic using Prometheus, Grafana or Stackdriver  https://opencensus.io/
+
+- [ ] setup public connection to GameServer
+  - rollout automaticly  xonotic stack on AWS Cloud 
+  - add ALB + AWS LoadBalancing Controller + ACM
+  - rollout istio + echo server
+  - provide access from global
+  - succesful connect to the xonotic server
 
 <b>issues</b>:
 - [x] My current user or role does not have access to Kubernetes objects on this EKS cluster
