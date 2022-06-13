@@ -33,7 +33,7 @@
   - [ ] automation delete simple-server 
  
 - [ ] rollout xonotic
-  - [ ]write checker for xonotic
+  - [ ] write checker for xonotic
   - [x] implement solution https://github.com/googleforgames/agones/tree/main/examples/xonotic
   - [ ] get successful check for xonotic 
   - [x] succesful connect using localhost client to xonotic server https://xonotic.org/ via kubectl proxy
