@@ -17,6 +17,8 @@ cd ./aws/eu-north-1/dev/eks-cluster
 terragrunt apply
 ```
 
+# start local cluster
+minikube start --nodes=1 --memory=8000m --disk-size=10000m -p gameserver
 
 
 
@@ -28,3 +30,4 @@ Finally don't forget to explore our documentation and usage guides on how to dev
  - Integrating the Game Server SDK (https://agones.dev/site/docs/guides/client-sdks/)
  - GameServer Health Checking (https://agones.dev/site/docs/guides/health-checking/)
  - Accessing Agones via the Kubernetes API (https://agones.dev/site/docs/guides/access-api/)
+

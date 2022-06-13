@@ -33,10 +33,10 @@
   - [ ] automation delete simple-server 
  
 - [ ] rollout xonotic
-  - write checker for xonotic
-  - implement solution https://github.com/googleforgames/agones/tree/main/examples/xonotic
-  - get successful check for xonotic 
-  - succesful connect using localhost client to xonotic server https://xonotic.org/ via kubectl proxy
+  - [ ]write checker for xonotic
+  - [x] implement solution https://github.com/googleforgames/agones/tree/main/examples/xonotic
+  - [ ] get successful check for xonotic 
+  - [x] succesful connect using localhost client to xonotic server https://xonotic.org/ via kubectl proxy
 
 - [ ] implement workflow for changing GameServer 
   - [ ] implement gitops approuch https://fluxcd.io/legacy/flux/
@@ -98,8 +98,16 @@ solution:
 
 <b>useful links</b>:
 - https://github.com/MartinHeinz/game-server-operator
+
 - https://developer.redis.com/create/kubernetes/kubernetes-operator/
+
 - https://developer.ibm.com/articles/introduction-to-kubernetes-operators/
+
 - https://habr.com/ru/post/469381/
+
 - https://github.com/comerford/minikube-agones-cluster
+
 - https://aws.amazon.com/ru/blogs/containers/how-to-route-udp-traffic-into-kubernetes/
+
+- Quilkin is a UDP proxy, specifically designed for use with multiplayer dedicated game servers.
+   https://markmandel.github.io/quilkin/main/book/introduction.html
